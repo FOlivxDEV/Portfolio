@@ -157,7 +157,6 @@ export default function Home() {
               <a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a>
               <a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a>
             </div>
-            <div className="trust-row"><span className="avatars"><i>UX</i><i>UI</i><i>DX</i></span><span><b>+100</b> experiências digitais entregues</span></div>
           </div>
           <div className="scroll-cue"><span /></div>
         </Section>
