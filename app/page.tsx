@@ -59,7 +59,7 @@ function ScrollyScene({ scene, progress, reduce }: { scene: Scene; progress: Mot
   const blur = useTransform(progress, scene.range, ["blur(14px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
   return <motion.div className="scrolly-scene" style={reduce ? undefined : { opacity, y, filter: blur }}>
     <span className="kicker">{scene.kicker}</span><h1>{scene.title}</h1><p>{scene.text}</p>
-    {scene.index === "05" && <div className="hero-actions"><a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>}
+    {scene.index === "04" && <div className="hero-actions"><a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>}
   </motion.div>;
 }
 
@@ -72,11 +72,10 @@ function ScrollyHero() {
   const mockScale = useTransform(scrollYProgress, [.08, .72, 1], [.82, .94, 1.12]);
   const mockRotate = useTransform(scrollYProgress, [0, .65, 1], [4, 0, -2]);
   const scenes: Scene[] = [
-    { range: [0, .08, .2, .28], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
-    { range: [.18, .28, .38, .47], index: "02", kicker: "Estratégia", title: <>Transformamos posicionamento em <span>direção.</span></>, text: "Cada escolha nasce do negócio, da audiência e da percepção que sua marca precisa construir." },
-    { range: [.37, .47, .57, .66], index: "03", kicker: "Design", title: <>Construímos valor, <span>camada por camada.</span></>, text: "Tipografia, ritmo, interface e movimento trabalham juntos — sem aparência de template." },
-    { range: [.56, .66, .76, .85], index: "04", kicker: "Tecnologia", title: <>Beleza que também entrega <span>performance.</span></>, text: "Código limpo, SEO, acessibilidade e velocidade transformam acabamento em resultado." },
-    { range: [.75, .85, .96, 1], index: "05", kicker: "O resultado", title: <>Design que gera percepção.<br /><span>Tecnologia que gera resultado.</span></>, text: "Uma presença digital preparada para fazer sua empresa ocupar um novo espaço." },
+    { range: [0, .02, .18, .26], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
+    { range: [.18, .26, .43, .51], index: "02", kicker: "Performance medida, não prometida", title: <>Experiências rápidas, construídas para o <span>Lighthouse.</span></>, text: "Performance, acessibilidade, boas práticas e SEO orientam cada decisão — do primeiro componente ao carregamento final." },
+    { range: [.43, .51, .68, .76], index: "03", kicker: "Design que move o negócio", title: <>Um bom site pode aumentar sua conversão em <span>até 60%.</span></>, text: "Clareza, velocidade e confiança reduzem fricção e ajudam mais visitantes a avançar até a decisão." },
+    { range: [.68, .76, .98, 1], index: "04", kicker: "Bem-vindo ao Studio X", title: <>Seu próximo grande site pode <span>começar agora.</span></>, text: "Você está pronto para construir uma presença digital à altura da sua empresa?" },
   ];
   return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
     <div className="scrolly-sticky">
@@ -92,7 +91,7 @@ function ScrollyHero() {
           </div>
         </motion.div>
       </div>
-      <div className="scrolly-progress"><span>01</span><i><motion.b style={reduce ? { height: "100%" } : { height: progressHeight }} /></i><span>05</span></div>
+      <div className="scrolly-progress"><span>01</span><i><motion.b style={reduce ? { height: "100%" } : { height: progressHeight }} /></i><span>04</span></div>
       <div className="scrolly-hint">Role para construir a experiência <ArrowRight size={13} /></div>
     </div>
   </section>;
