@@ -143,12 +143,6 @@ export default function Home() {
       <main id="conteudo">
         <Section id="inicio" className="hero">
           <div className="hero-orb orb-one" /><div className="hero-orb orb-two" />
-          <motion.div className="float-badge badge-left" animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity }}>
-            <Gauge size={18} /><span><small>PERFORMANCE</small> 99/100</span>
-          </motion.div>
-          <motion.div className="float-badge badge-right" animate={{ y: [0, 8, 0] }} transition={{ duration: 6, repeat: Infinity }}>
-            <ShieldCheck size={18} /><span><small>CONFIANÇA</small> Código robusto</span>
-          </motion.div>
           <div className="hero-content">
             <div className="eyebrow"><i /> Websites de alta performance</div>
             <h1>Criamos sites que fazem empresas <span>parecerem gigantes.</span></h1>
