@@ -71,21 +71,21 @@ function ScrollyHero() {
   const { scrollYProgress } = useScroll({ target, offset: ["start start", "end end"] });
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const glowX = useTransform(scrollYProgress, [0, 1], ["-25%", "35%"]);
-  const lighthouseOpacity = useTransform(scrollYProgress, [0, .18, .26, .43, .51], [0, 0, 1, 1, 0]);
-  const lighthouseY = useTransform(scrollYProgress, [.18, .26, .43, .51], [24, 0, 0, -18]);
+  const lighthouseOpacity = useTransform(scrollYProgress, [0, .23, .28, .43, .48], [0, 0, 1, 1, 0]);
+  const lighthouseY = useTransform(scrollYProgress, [.23, .28, .43, .48], [24, 0, 0, -18]);
   const scenes: Scene[] = [
-    { range: [0, .02, .18, .26], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
-    { range: [.18, .26, .43, .51], index: "02", kicker: "Excelência técnica comprovada", title: <>Excelente desempenho e performance nos <span>parâmetros do Lighthouse.</span></>, text: "Velocidade, acessibilidade, boas práticas e SEO são tratados como requisitos essenciais para entregar uma experiência rápida e confiável." },
-    { range: [.43, .51, .68, .76], index: "03", kicker: "Design que move o negócio", title: <>Um bom site pode aumentar sua conversão em <span>até 60%.</span></>, text: "Clareza, velocidade e confiança reduzem fricção e ajudam mais visitantes a avançar até a decisão." },
-    { range: [.68, .76, .98, 1], index: "04", kicker: "Bem-vindo ao Studio X", title: <>Seu próximo grande site pode <span>começar agora.</span></>, text: "Você está pronto para construir uma presença digital à altura da sua empresa?" },
+    { range: [0, .01, .19, .23], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
+    { range: [.24, .28, .43, .47], index: "02", kicker: "Excelência técnica comprovada", title: <>Excelente desempenho e performance nos <span>parâmetros do Lighthouse.</span></>, text: "Velocidade, acessibilidade, boas práticas e SEO são tratados como requisitos essenciais para entregar uma experiência rápida e confiável." },
+    { range: [.48, .52, .67, .71], index: "03", kicker: "Design que move o negócio", title: <>Um bom site pode aumentar sua conversão em <span>até 60%.</span></>, text: "Clareza, velocidade e confiança reduzem fricção e ajudam mais visitantes a avançar até a decisão." },
+    { range: [.72, .76, .98, 1], index: "04", kicker: "Bem-vindo ao Studio X", title: <>Seu próximo grande site pode <span>começar agora.</span></>, text: "Você está pronto para construir uma presença digital à altura da sua empresa?" },
   ];
   return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
     <div className="scrolly-sticky">
       <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
+      <Image className="scrolly-background" src="/scrolly-performance.png" alt="" fill priority sizes="100vw" />
       <div className="scrolly-grid">
         <div className="scrolly-copy">{scenes.map(scene => <ScrollyScene key={scene.index} scene={scene} progress={scrollYProgress} reduce={reduce} />)}</div>
         <div className="scrolly-visual">
-          <Image src="/scrolly-performance.png" alt="" fill priority sizes="(max-width: 980px) 100vw, 58vw" />
           <motion.div className="lighthouse-panel" style={reduce ? { opacity: 0 } : { opacity: lighthouseOpacity, y: lighthouseY }}>
             <div className="lighthouse-scores">
               {[["97","Performance"],["100","Accessibility"],["100","Best Practices"],["100","SEO"]].map(([score,label]) =>
