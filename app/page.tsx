@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import {
   ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Code2, Gauge,
@@ -50,6 +50,52 @@ function ProjectVisual({ project, large = false }: { project: (typeof portfolio)
       </div>
     </div>
   );
+}
+
+type Scene = { range: number[]; index: string; kicker: string; title: React.ReactNode; text: string };
+function ScrollyScene({ scene, progress, reduce }: { scene: Scene; progress: MotionValue<number>; reduce: boolean | null }) {
+  const opacity = useTransform(progress, scene.range, [0, 1, 1, 0]);
+  const y = useTransform(progress, scene.range, [36, 0, 0, -28]);
+  const blur = useTransform(progress, scene.range, ["blur(14px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
+  return <motion.div className="scrolly-scene" style={reduce ? undefined : { opacity, y, filter: blur }}>
+    <span className="kicker">{scene.kicker}</span><h1>{scene.title}</h1><p>{scene.text}</p>
+    {scene.index === "05" && <div className="hero-actions"><a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>}
+  </motion.div>;
+}
+
+function ScrollyHero() {
+  const target = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target, offset: ["start start", "end end"] });
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const glowX = useTransform(scrollYProgress, [0, 1], ["-25%", "35%"]);
+  const mockScale = useTransform(scrollYProgress, [.08, .72, 1], [.82, .94, 1.12]);
+  const mockRotate = useTransform(scrollYProgress, [0, .65, 1], [4, 0, -2]);
+  const scenes: Scene[] = [
+    { range: [0, .08, .2, .28], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
+    { range: [.18, .28, .38, .47], index: "02", kicker: "Estratégia", title: <>Transformamos posicionamento em <span>direção.</span></>, text: "Cada escolha nasce do negócio, da audiência e da percepção que sua marca precisa construir." },
+    { range: [.37, .47, .57, .66], index: "03", kicker: "Design", title: <>Construímos valor, <span>camada por camada.</span></>, text: "Tipografia, ritmo, interface e movimento trabalham juntos — sem aparência de template." },
+    { range: [.56, .66, .76, .85], index: "04", kicker: "Tecnologia", title: <>Beleza que também entrega <span>performance.</span></>, text: "Código limpo, SEO, acessibilidade e velocidade transformam acabamento em resultado." },
+    { range: [.75, .85, .96, 1], index: "05", kicker: "O resultado", title: <>Design que gera percepção.<br /><span>Tecnologia que gera resultado.</span></>, text: "Uma presença digital preparada para fazer sua empresa ocupar um novo espaço." },
+  ];
+  return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
+    <div className="scrolly-sticky">
+      <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
+      <div className="scrolly-grid">
+        <div className="scrolly-copy">{scenes.map(scene => <ScrollyScene key={scene.index} scene={scene} progress={scrollYProgress} reduce={reduce} />)}</div>
+        <motion.div className="scrolly-stage glass" style={reduce ? undefined : { scale: mockScale, rotate: mockRotate }}>
+          <div className="stage-top"><i /><i /><i /><span>studiox.design</span></div>
+          <div className="stage-canvas">
+            <div className="stage-nav"><b>STUDIO X</b><span /><span /><button>Começar</button></div>
+            <div className="stage-hero"><small>EXPERIÊNCIAS DIGITAIS</small><strong>Marcas extraordinárias<br />merecem presença à altura.</strong><p /><p /><button>Descobrir projeto</button></div>
+            <div className="stage-orb" /><div className="stage-card card-a" /><div className="stage-card card-b" />
+          </div>
+        </motion.div>
+      </div>
+      <div className="scrolly-progress"><span>01</span><i><motion.b style={reduce ? { height: "100%" } : { height: progressHeight }} /></i><span>05</span></div>
+      <div className="scrolly-hint">Role para construir a experiência <ArrowRight size={13} /></div>
+    </div>
+  </section>;
 }
 
 function ProjectModal({ project, close }: { project: (typeof portfolio)[number]; close: () => void }) {
@@ -141,19 +187,7 @@ export default function Home() {
       </header>
 
       <main id="conteudo">
-        <Section id="inicio" className="hero">
-          <div className="hero-orb orb-one" /><div className="hero-orb orb-two" />
-          <div className="hero-content">
-            <div className="eyebrow"><i /> Websites de alta performance</div>
-            <h1>Criamos sites que fazem empresas <span>parecerem gigantes.</span></h1>
-            <p>Projetos desenvolvidos para gerar autoridade, confiança e conversão — com estratégia, tecnologia e acabamento impecável.</p>
-            <div className="hero-actions">
-              <a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a>
-              <a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a>
-            </div>
-          </div>
-          <div className="scroll-cue"><span /></div>
-        </Section>
+        <ScrollyHero />
 
         <Section id="portfolio">
           <div className="section-heading split">
