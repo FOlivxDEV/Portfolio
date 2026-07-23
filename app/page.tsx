@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import {
   ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Code2, Gauge,
@@ -54,12 +54,12 @@ function ProjectVisual({ project, large = false }: { project: (typeof portfolio)
 }
 
 type Scene = { range: number[]; index: string; kicker: string; title: React.ReactNode; text: string };
-function ScrollyScene({ scene, progress, reduce }: { scene: Scene; progress: MotionValue<number>; reduce: boolean | null }) {
-  const first = scene.index === "01";
-  const opacity = useTransform(progress, scene.range, first ? [1, 1, 1, 0] : [0, 1, 1, 0]);
-  const y = useTransform(progress, scene.range, first ? [0, 0, 0, -28] : [36, 0, 0, -28]);
-  const blur = useTransform(progress, scene.range, first ? ["blur(0px)", "blur(0px)", "blur(0px)", "blur(12px)"] : ["blur(14px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
-  return <motion.div className="scrolly-scene" style={reduce ? undefined : { opacity, y, filter: blur }}>
+function ScrollyScene({ scene, reduce }: { scene: Scene; reduce: boolean | null }) {
+  return <motion.div className="scrolly-scene"
+    initial={reduce ? false : { opacity: 0, y: 28, filter: "blur(12px)" }}
+    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    exit={reduce ? undefined : { opacity: 0, y: -22, filter: "blur(10px)" }}
+    transition={{ duration: .34, ease: [0.22, 1, 0.36, 1] }}>
     <span className="kicker">{scene.kicker}</span><h1>{scene.title}</h1><p>{scene.text}</p>
     {scene.index === "04" && <div className="hero-actions"><a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>}
   </motion.div>;
@@ -68,11 +68,14 @@ function ScrollyScene({ scene, progress, reduce }: { scene: Scene; progress: Mot
 function ScrollyHero() {
   const target = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+  const [activeScene, setActiveScene] = useState(0);
   const { scrollYProgress } = useScroll({ target, offset: ["start start", "end end"] });
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const glowX = useTransform(scrollYProgress, [0, 1], ["-25%", "35%"]);
-  const lighthouseOpacity = useTransform(scrollYProgress, [0, .23, .28, .43, .48], [0, 0, 1, 1, 0]);
-  const lighthouseY = useTransform(scrollYProgress, [.23, .28, .43, .48], [24, 0, 0, -18]);
+  useMotionValueEvent(scrollYProgress, "change", value => {
+    const next = value < .24 ? 0 : value < .48 ? 1 : value < .72 ? 2 : 3;
+    setActiveScene(current => current === next ? current : next);
+  });
   const scenes: Scene[] = [
     { range: [0, .01, .19, .23], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
     { range: [.24, .28, .43, .47], index: "02", kicker: "Excelência técnica comprovada", title: <>Excelente desempenho e performance nos <span>parâmetros do Lighthouse.</span></>, text: "Velocidade, acessibilidade, boas práticas e SEO são tratados como requisitos essenciais para entregar uma experiência rápida e confiável." },
@@ -82,11 +85,16 @@ function ScrollyHero() {
   return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
     <div className="scrolly-sticky">
       <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
-      <Image className="scrolly-background" src="/scrolly-performance.png" alt="" fill priority sizes="100vw" />
+      <div className="liquid-background" aria-hidden="true">
+        <Image className="liquid-layer liquid-layer-a" src="/scrolly-performance.png" alt="" fill priority sizes="100vw" />
+        <Image className="liquid-layer liquid-layer-b" src="/scrolly-performance.png" alt="" fill priority sizes="100vw" />
+      </div>
       <div className="scrolly-grid">
-        <div className="scrolly-copy">{scenes.map(scene => <ScrollyScene key={scene.index} scene={scene} progress={scrollYProgress} reduce={reduce} />)}</div>
+        <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
         <div className="scrolly-visual">
-          <motion.div className="lighthouse-panel" style={reduce ? { opacity: 0 } : { opacity: lighthouseOpacity, y: lighthouseY }}>
+          <AnimatePresence>{activeScene === 1 && <motion.div className="lighthouse-panel"
+            initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: .32 }}>
             <div className="lighthouse-scores">
               {[["97","Performance"],["100","Accessibility"],["100","Best Practices"],["100","SEO"]].map(([score,label]) =>
                 <div key={label}><i style={{ "--score": `${Number(score) * 3.6}deg` } as React.CSSProperties}><span>{score}</span></i><small>{label}</small></div>
@@ -97,7 +105,7 @@ function ScrollyHero() {
                 <div key={label}><span>{label}</span><b>{value}</b></div>
               )}
             </div>
-          </motion.div>
+          </motion.div>}</AnimatePresence>
         </div>
       </div>
       <div className="scrolly-progress"><span>01</span><i><motion.b style={reduce ? { height: "100%" } : { height: progressHeight }} /></i><span>04</span></div>
