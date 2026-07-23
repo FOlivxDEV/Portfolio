@@ -81,8 +81,8 @@ h1 span { background:linear-gradient(120deg,#fff 0%,#a7bbff 65%,#d3dcff 100%); c
 .badge-left { left:8%; top:42%; }.badge-right { right:8%; top:30%; transform:rotate(4deg); }
 .hero-orb { position:absolute; width:390px; height:390px; border-radius:50%; filter:blur(80px); opacity:.14; }.orb-one { background:#6080ff; left:5%; top:20%; }.orb-two { background:#bf79ff; right:10%; bottom:9%; opacity:.08; }
 .scroll-cue { position:absolute; bottom:28px; width:1px; height:44px; background:rgba(255,255,255,.12); }.scroll-cue span { display:block; width:1px; height:15px; background:var(--accent); animation:scroll 2s infinite; } @keyframes scroll { 0%{transform:translateY(0);opacity:0} 40%{opacity:1} 100%{transform:translateY(29px);opacity:0} }
-.scrolly-hero{height:245vh;position:relative;max-width:1900px;margin:auto}
-.scrolly-sticky{height:100vh;position:sticky;top:0;overflow:hidden;display:grid;place-items:center;padding:110px clamp(45px,6vw,110px) 55px;background:#050505}
+.scrolly-hero{height:245vh;position:relative;width:100%;max-width:none;margin:0}
+.scrolly-sticky{height:100vh;width:100%;position:sticky;top:0;overflow:hidden;display:grid;place-items:center;padding:110px clamp(45px,6vw,110px) 55px;background:#050505}
 .scrolly-sticky:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(90deg,rgba(5,5,5,.97) 0%,rgba(5,5,5,.88) 34%,rgba(5,5,5,.24) 66%,rgba(5,5,5,.78) 100%),linear-gradient(0deg,#050505 0%,transparent 24%,transparent 76%,rgba(5,5,5,.92) 100%)}
 .hero-aurora{position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none}
 .hero-aurora span{position:absolute;width:145vw;height:19vw;min-height:210px;left:-24vw;top:40%;border-radius:50% 42% 55% 46% / 58% 45% 60% 42%;background:linear-gradient(100deg,rgba(34,87,255,.12) 0%,rgba(83,144,255,.7) 28%,rgba(122,95,255,.58) 52%,rgba(64,214,207,.4) 76%,rgba(44,100,255,.08) 100%);filter:blur(105px);opacity:.48;will-change:transform;backface-visibility:hidden;animation:hero-aurora-flow 30s ease-in-out infinite alternate}
@@ -91,7 +91,7 @@ h1 span { background:linear-gradient(120deg,#fff 0%,#a7bbff 65%,#d3dcff 100%); c
   45%{transform:translate3d(5vw,7vh,0) rotate(-2deg) scale(1.14)}
   100%{transform:translate3d(15vw,-4vh,0) rotate(8deg) scale(.98)}
 }
-.carousel-hero{height:100svh;min-height:720px}
+.carousel-hero{height:100svh;min-height:720px;width:100vw;max-width:none;margin-inline:calc(50% - 50vw)}
 .carousel-sticky{position:relative;top:auto;height:100%;min-height:720px}
 .carousel-sticky .hero-aurora span{animation:none;transform:translate3d(2vw,0,0) rotate(-4deg) scale(1.08)}
 .carousel-grid{grid-template-columns:1fr;max-width:1540px}
