@@ -81,12 +81,6 @@ function ScrollyHero() {
   return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
     <div className="scrolly-sticky">
       <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
-      <motion.div className="float-badge scrolly-badge badge-left" animate={reduce ? undefined : { y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity }}>
-        <Gauge size={18} /><span><small>PERFORMANCE</small> Lighthouse 100/100</span>
-      </motion.div>
-      <motion.div className="float-badge scrolly-badge badge-right" animate={reduce ? undefined : { y: [0, 8, 0] }} transition={{ duration: 6, repeat: Infinity }}>
-        <ShieldCheck size={18} /><span><small>CONFIANÇA</small> Código robusto</span>
-      </motion.div>
       <div className="scrolly-grid">
         <div className="scrolly-copy">{scenes.map(scene => <ScrollyScene key={scene.index} scene={scene} progress={scrollYProgress} reduce={reduce} />)}</div>
         <motion.div className="scrolly-stage glass" style={reduce ? undefined : { scale: mockScale, rotate: mockRotate }}>
