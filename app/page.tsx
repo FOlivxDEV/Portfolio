@@ -84,6 +84,7 @@ function ScrollyHero() {
   return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
     <div className="scrolly-sticky">
       <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
+      <div className="hero-aurora" aria-hidden="true"><span /></div>
       <div className="scrolly-grid">
         <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
         <div className="scrolly-visual">
@@ -185,7 +186,6 @@ export default function Home() {
 
   return (
     <>
-      <div className="aurora-background" aria-hidden="true"><span className="aurora-ribbon ribbon-one" /><span className="aurora-ribbon ribbon-two" /><span className="aurora-ribbon ribbon-three" /></div>
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="nav-wrap">
         <nav className="navbar glass" aria-label="Navegação principal">
