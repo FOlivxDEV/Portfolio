@@ -95,6 +95,11 @@ function HeroCarousel() {
       <div className="hero-aurora" aria-hidden="true"><span /></div>
       <div className="scrolly-grid carousel-grid">
         <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
+        <div className="hero-glass-visual" aria-hidden="true">
+          <div className="glass-browser-top"><i /><i /><i /></div>
+          <div className="glass-wave"><i /><i /><i /></div>
+          <span className="glass-shine" />
+        </div>
       </div>
       <div className="carousel-controls-hero" aria-label="Selecionar mensagem">
         <div className="carousel-timer" key={activeScene}><i /></div>
