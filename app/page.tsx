@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig, benefits, portfolio, plans, timeline, stats } from "./site-data";
 
 const contactSchema = z.object({
@@ -70,8 +71,8 @@ function ScrollyHero() {
   const { scrollYProgress } = useScroll({ target, offset: ["start start", "end end"] });
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const glowX = useTransform(scrollYProgress, [0, 1], ["-25%", "35%"]);
-  const mockScale = useTransform(scrollYProgress, [.08, .72, 1], [.82, .94, 1.12]);
-  const mockRotate = useTransform(scrollYProgress, [0, .65, 1], [4, 0, -2]);
+  const lighthouseOpacity = useTransform(scrollYProgress, [0, .18, .26, .43, .51], [0, 0, 1, 1, 0]);
+  const lighthouseY = useTransform(scrollYProgress, [.18, .26, .43, .51], [24, 0, 0, -18]);
   const scenes: Scene[] = [
     { range: [0, .02, .18, .26], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
     { range: [.18, .26, .43, .51], index: "02", kicker: "Excelência técnica comprovada", title: <>Excelente desempenho e performance nos <span>parâmetros do Lighthouse.</span></>, text: "Velocidade, acessibilidade, boas práticas e SEO são tratados como requisitos essenciais para entregar uma experiência rápida e confiável." },
@@ -83,14 +84,21 @@ function ScrollyHero() {
       <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
       <div className="scrolly-grid">
         <div className="scrolly-copy">{scenes.map(scene => <ScrollyScene key={scene.index} scene={scene} progress={scrollYProgress} reduce={reduce} />)}</div>
-        <motion.div className="scrolly-stage glass" style={reduce ? undefined : { scale: mockScale, rotate: mockRotate }}>
-          <div className="stage-top"><i /><i /><i /><span>studiox.design</span></div>
-          <div className="stage-canvas">
-            <div className="stage-nav"><b>STUDIO X</b><span /><span /><button>Começar</button></div>
-            <div className="stage-hero"><small>EXPERIÊNCIAS DIGITAIS</small><strong>Marcas extraordinárias<br />merecem presença à altura.</strong><p /><p /><button>Descobrir projeto</button></div>
-            <div className="stage-orb" /><div className="stage-card card-a" /><div className="stage-card card-b" />
-          </div>
-        </motion.div>
+        <div className="scrolly-visual">
+          <Image src="/scrolly-performance.png" alt="" fill priority sizes="(max-width: 980px) 100vw, 58vw" />
+          <motion.div className="lighthouse-panel" style={reduce ? { opacity: 0 } : { opacity: lighthouseOpacity, y: lighthouseY }}>
+            <div className="lighthouse-scores">
+              {[["97","Performance"],["100","Accessibility"],["100","Best Practices"],["100","SEO"]].map(([score,label]) =>
+                <div key={label}><i style={{ "--score": `${Number(score) * 3.6}deg` } as React.CSSProperties}><span>{score}</span></i><small>{label}</small></div>
+              )}
+            </div>
+            <div className="lighthouse-metrics">
+              {[["First Contentful Paint","1.8 s"],["Time to Interactive","2.1 s"],["Speed Index","2.0 s"],["Total Blocking Time","50 ms"],["Largest Contentful Paint","2.1 s"],["Cumulative Layout Shift","0"]].map(([label,value]) =>
+                <div key={label}><span>{label}</span><b>{value}</b></div>
+              )}
+            </div>
+          </motion.div>
+        </div>
       </div>
       <div className="scrolly-progress"><span>01</span><i><motion.b style={reduce ? { height: "100%" } : { height: progressHeight }} /></i><span>04</span></div>
       <div className="scrolly-hint">Role para construir a experiência <ArrowRight size={13} /></div>
