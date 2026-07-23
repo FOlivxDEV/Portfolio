@@ -3,15 +3,15 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import {
-  ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Code2, Gauge,
-  Layers3, Menu, Search, ShieldCheck, Sparkles, X, Zap,
+  ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Gauge,
+  Layers3, Menu, ShieldCheck, Sparkles, X, Zap,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import { siteConfig, benefits, portfolio, plans, timeline, stats } from "./site-data";
+import { siteConfig, portfolio, plans, timeline, stats } from "./site-data";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Informe seu nome."),
@@ -241,12 +241,27 @@ export default function Home() {
         </Section>
 
         <Section id="sobre">
-          <div className="section-heading centered"><span className="kicker">O padrão {siteConfig.name}</span><h2>O detalhe não é detalhe.<br />É o que define a experiência.</h2></div>
-          <div className="benefit-grid">
-            {benefits.map((item, i) => {
-              const Icon = [Gauge, Search, Sparkles, Code2, ShieldCheck, BarChart3][i];
-              return <article className="benefit-card glass" key={item.title}><span className="icon-box"><Icon size={21} /></span><b>{item.title}</b><p>{item.description}</p><small>0{i + 1}</small></article>;
-            })}
+          <div className="section-heading centered"><span className="kicker">Resultados que você percebe</span><h2>Por que escolher a {siteConfig.name}?</h2><p>Porque seu cliente não espera. Entregamos um site rápido, confiável e pronto para transformar visitas em oportunidades.</p></div>
+          <div className="lighthouse-showcase glass">
+            <div className="lighthouse-proof">
+              <span className="proof-label"><Gauge size={16} /> Resultado de referência no Lighthouse</span>
+              <div className="proof-scores">
+                {[["99", "Performance"], ["100", "Acessibilidade"], ["100", "Boas práticas"], ["100", "SEO"]].map(([score, label]) =>
+                  <div key={label}><i style={{ "--score": `${score}%` } as React.CSSProperties}><b>{score}</b></i><span>{label}</span></div>)}
+              </div>
+              <div className="proof-metrics">
+                <div><span>Primeiro conteúdo</span><b>1,8 s</b></div>
+                <div><span>Interação disponível</span><b>2,1 s</b></div>
+                <div><span>Carregamento visual</span><b>2,0 s</b></div>
+                <div><span>Estabilidade da página</span><b>100%</b></div>
+              </div>
+              <small>*Indicadores de referência. Os resultados variam conforme conteúdo, hospedagem e integrações.</small>
+            </div>
+            <div className="proof-benefits">
+              <article><Zap size={20} /><div><b>Abre rápido</b><p>Seu cliente vê o que precisa antes de perder a paciência.</p></div></article>
+              <article><ShieldCheck size={20} /><div><b>Passa confiança</b><p>Uma experiência estável faz sua empresa parecer mais profissional.</p></div></article>
+              <article><BarChart3 size={20} /><div><b>Converte melhor</b><p>Menos espera e menos atrito ajudam mais pessoas a pedir um orçamento.</p></div></article>
+            </div>
           </div>
         </Section>
 
