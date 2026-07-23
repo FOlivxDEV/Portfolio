@@ -78,19 +78,22 @@ function HeroCarousel() {
   const reduce = useReducedMotion();
   const [activeScene, setActiveScene] = useState(0);
   const scenes: Scene[] = [
+    { index: "04", kicker: "Bem-vindo ao Studio X", title: <>Seu próximo grande site pode <span>começar agora.</span></>, text: "Você está pronto para construir uma presença digital à altura da sua empresa?" },
     { index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
     { index: "02", kicker: "Excelência técnica comprovada", title: <>Excelente desempenho e performance nos <span>parâmetros do Lighthouse.</span></>, text: "Velocidade, acessibilidade, boas práticas e SEO são tratados como requisitos essenciais para entregar uma experiência rápida e confiável." },
     { index: "03", kicker: "Design que move o negócio", title: <>Um bom site pode aumentar sua conversão em <span>até 60%.</span></>, text: "Clareza, velocidade e confiança reduzem fricção e ajudam mais visitantes a avançar até a decisão." },
-    { index: "04", kicker: "Bem-vindo ao Studio X", title: <>Seu próximo grande site pode <span>começar agora.</span></>, text: "Você está pronto para construir uma presença digital à altura da sua empresa?" },
   ];
+  const duration = activeScene === 0 ? 8_000 : 5_000;
   useEffect(() => {
     if (reduce) return;
-    const timer = window.setInterval(() => setActiveScene(current => (current + 1) % scenes.length), 13_000);
-    return () => window.clearInterval(timer);
-  }, [reduce, scenes.length, activeScene]);
+    const timer = window.setTimeout(() => setActiveScene(current => (current + 1) % scenes.length), duration);
+    return () => window.clearTimeout(timer);
+  }, [reduce, scenes.length, activeScene, duration]);
   const select = (index: number) => setActiveScene(index);
   return <section id="inicio" className="scrolly-hero carousel-hero">
-    <div className="scrolly-sticky carousel-sticky">
+    <div className="scrolly-sticky carousel-sticky" onClick={event => {
+      if (!(event.target as HTMLElement).closest("a,button")) select((activeScene + 1) % scenes.length);
+    }}>
       <div className="scrolly-glow" />
       <div className="hero-aurora" aria-hidden="true"><span /></div>
       <div className="scrolly-grid carousel-grid">
@@ -102,7 +105,7 @@ function HeroCarousel() {
         </div>
       </div>
       <div className="carousel-controls-hero" aria-label="Selecionar mensagem">
-        <div className="carousel-timer" key={activeScene}><i /></div>
+        <div className="carousel-timer" key={activeScene}><i style={{ animationDuration: `${duration}ms` }} /></div>
         <span>{String(activeScene + 1).padStart(2, "0")} / 04</span>
         <div>{scenes.map((scene, index) => <button key={scene.index} className={activeScene === index ? "active" : ""} onClick={() => select(index)} aria-label={`Ver mensagem ${index + 1}`} />)}</div>
       </div>
