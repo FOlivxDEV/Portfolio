@@ -1,6 +1,7 @@
 export const siteConfig = {
   name: "Studio X",
   founder: "Seu Nome",
+  whatsapp: "5511999999999",
   navigation: [
     { label: "Início", href: "#inicio" }, { label: "Portfólio", href: "#portfolio" },
     { label: "Sobre", href: "#sobre" }, { label: "Planos", href: "#planos" }, { label: "Contato", href: "#contato" },
