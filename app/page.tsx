@@ -54,13 +54,22 @@ function ProjectVisual({ project, large = false }: { project: (typeof portfolio)
 
 type Scene = { range: number[]; index: string; kicker: string; title: React.ReactNode; text: string };
 function ScrollyScene({ scene, reduce }: { scene: Scene; reduce: boolean | null }) {
+  const parent = {
+    hidden: { opacity: 0, y: 48, scale: .965, filter: "blur(22px)" },
+    visible: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { duration: .64, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], staggerChildren: .1, delayChildren: .08 } },
+    exit: { opacity: 0, y: -38, scale: 1.025, filter: "blur(18px)", transition: { duration: .48, ease: [0.7, 0, 0.84, 0] as [number, number, number, number] } },
+  };
+  const child = {
+    hidden: { opacity: 0, y: 22 },
+    visible: { opacity: 1, y: 0, transition: { duration: .48, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+    exit: { opacity: 0, y: -10, transition: { duration: .18 } },
+  };
   return <motion.div className="scrolly-scene"
-    initial={reduce ? false : { opacity: 0, y: 28, filter: "blur(12px)" }}
-    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-    exit={reduce ? undefined : { opacity: 0, y: -22, filter: "blur(10px)" }}
-    transition={{ duration: .34, ease: [0.22, 1, 0.36, 1] }}>
-    <span className="kicker">{scene.kicker}</span><h1>{scene.title}</h1><p>{scene.text}</p>
-    {scene.index === "04" && <div className="hero-actions"><a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>}
+    variants={parent} initial={reduce ? false : "hidden"} animate="visible" exit={reduce ? undefined : "exit"}>
+    <motion.span variants={child} className="kicker">{scene.kicker}</motion.span>
+    <motion.h1 variants={child}>{scene.title}</motion.h1>
+    <motion.p variants={child}>{scene.text}</motion.p>
+    {scene.index === "04" && <motion.div variants={child} className="hero-actions"><a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></motion.div>}
   </motion.div>;
 }
 
