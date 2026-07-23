@@ -55,16 +55,17 @@ function ProjectVisual({ project, large = false }: { project: (typeof portfolio)
 type Scene = { range: number[]; index: string; kicker: string; title: React.ReactNode; text: string };
 function ScrollyScene({ scene, reduce }: { scene: Scene; reduce: boolean | null }) {
   const parent = {
-    hidden: { opacity: 0, y: 48, scale: .965, filter: "blur(22px)" },
-    visible: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { duration: .64, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], staggerChildren: .1, delayChildren: .08 } },
-    exit: { opacity: 0, y: -38, scale: 1.025, filter: "blur(18px)", transition: { duration: .48, ease: [0.7, 0, 0.84, 0] as [number, number, number, number] } },
+    hidden: { opacity: 0, y: 44, scale: .975 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: .72, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], staggerChildren: .11, delayChildren: .1 } },
+    exit: { opacity: 0, y: -34, scale: 1.018, transition: { duration: .58, ease: [0.7, 0, 0.84, 0] as [number, number, number, number], staggerChildren: .045, staggerDirection: -1 } },
   };
   const child = {
-    hidden: { opacity: 0, y: 22 },
-    visible: { opacity: 1, y: 0, transition: { duration: .48, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
-    exit: { opacity: 0, y: -10, transition: { duration: .18 } },
+    hidden: { opacity: 0, y: 28, scale: .985, filter: "blur(32px)" },
+    visible: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { duration: .68, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+    exit: { opacity: 0, y: -18, scale: 1.01, filter: "blur(28px)", transition: { duration: .46, ease: [0.7, 0, 0.84, 0] as [number, number, number, number] } },
   };
   return <motion.div className="scrolly-scene"
+    style={{ willChange: "transform, opacity, filter" }}
     variants={parent} initial={reduce ? false : "hidden"} animate="visible" exit={reduce ? undefined : "exit"}>
     <motion.span variants={child} className="kicker">{scene.kicker}</motion.span>
     <motion.h1 variants={child}>{scene.title}</motion.h1>
