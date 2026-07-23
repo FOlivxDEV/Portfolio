@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import Image from "next/image";
 import { siteConfig, benefits, portfolio, plans, timeline, stats } from "./site-data";
 
 const contactSchema = z.object({
@@ -85,10 +84,6 @@ function ScrollyHero() {
   return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
     <div className="scrolly-sticky">
       <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
-      <div className="liquid-background" aria-hidden="true">
-        <Image className="liquid-layer liquid-layer-a" src="/scrolly-performance.png" alt="" fill priority sizes="100vw" />
-        <Image className="liquid-layer liquid-layer-b" src="/scrolly-performance.png" alt="" fill priority sizes="100vw" />
-      </div>
       <div className="scrolly-grid">
         <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
         <div className="scrolly-visual">
@@ -190,6 +185,7 @@ export default function Home() {
 
   return (
     <>
+      <div className="aurora-background" aria-hidden="true"><span className="aurora-ribbon ribbon-one" /><span className="aurora-ribbon ribbon-two" /><span className="aurora-ribbon ribbon-three" /></div>
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="nav-wrap">
         <nav className="navbar glass" aria-label="Navegação principal">
