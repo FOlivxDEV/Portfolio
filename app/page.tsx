@@ -54,9 +54,10 @@ function ProjectVisual({ project, large = false }: { project: (typeof portfolio)
 
 type Scene = { range: number[]; index: string; kicker: string; title: React.ReactNode; text: string };
 function ScrollyScene({ scene, progress, reduce }: { scene: Scene; progress: MotionValue<number>; reduce: boolean | null }) {
-  const opacity = useTransform(progress, scene.range, [0, 1, 1, 0]);
-  const y = useTransform(progress, scene.range, [36, 0, 0, -28]);
-  const blur = useTransform(progress, scene.range, ["blur(14px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
+  const first = scene.index === "01";
+  const opacity = useTransform(progress, scene.range, first ? [1, 1, 1, 0] : [0, 1, 1, 0]);
+  const y = useTransform(progress, scene.range, first ? [0, 0, 0, -28] : [36, 0, 0, -28]);
+  const blur = useTransform(progress, scene.range, first ? ["blur(0px)", "blur(0px)", "blur(0px)", "blur(12px)"] : ["blur(14px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
   return <motion.div className="scrolly-scene" style={reduce ? undefined : { opacity, y, filter: blur }}>
     <span className="kicker">{scene.kicker}</span><h1>{scene.title}</h1><p>{scene.text}</p>
     {scene.index === "04" && <div className="hero-actions"><a className="primary-button" href="#contato">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>}
@@ -73,13 +74,19 @@ function ScrollyHero() {
   const mockRotate = useTransform(scrollYProgress, [0, .65, 1], [4, 0, -2]);
   const scenes: Scene[] = [
     { range: [0, .02, .18, .26], index: "01", kicker: "A percepção começa antes da primeira palavra", title: <>Criamos sites que fazem empresas <span>parecerem gigantes.</span></>, text: "Autoridade, confiança e conversão traduzidas em uma experiência digital memorável." },
-    { range: [.18, .26, .43, .51], index: "02", kicker: "Performance medida, não prometida", title: <>Experiências rápidas, construídas para o <span>Lighthouse.</span></>, text: "Performance, acessibilidade, boas práticas e SEO orientam cada decisão — do primeiro componente ao carregamento final." },
+    { range: [.18, .26, .43, .51], index: "02", kicker: "Excelência técnica comprovada", title: <>Excelente desempenho e performance nos <span>parâmetros do Lighthouse.</span></>, text: "Velocidade, acessibilidade, boas práticas e SEO são tratados como requisitos essenciais para entregar uma experiência rápida e confiável." },
     { range: [.43, .51, .68, .76], index: "03", kicker: "Design que move o negócio", title: <>Um bom site pode aumentar sua conversão em <span>até 60%.</span></>, text: "Clareza, velocidade e confiança reduzem fricção e ajudam mais visitantes a avançar até a decisão." },
     { range: [.68, .76, .98, 1], index: "04", kicker: "Bem-vindo ao Studio X", title: <>Seu próximo grande site pode <span>começar agora.</span></>, text: "Você está pronto para construir uma presença digital à altura da sua empresa?" },
   ];
   return <section ref={target} id="inicio" className={`scrolly-hero ${reduce ? "reduced" : ""}`}>
     <div className="scrolly-sticky">
       <motion.div className="scrolly-glow" style={reduce ? undefined : { x: glowX }} />
+      <motion.div className="float-badge scrolly-badge badge-left" animate={reduce ? undefined : { y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity }}>
+        <Gauge size={18} /><span><small>PERFORMANCE</small> Lighthouse 100/100</span>
+      </motion.div>
+      <motion.div className="float-badge scrolly-badge badge-right" animate={reduce ? undefined : { y: [0, 8, 0] }} transition={{ duration: 6, repeat: Infinity }}>
+        <ShieldCheck size={18} /><span><small>CONFIANÇA</small> Código robusto</span>
+      </motion.div>
       <div className="scrolly-grid">
         <div className="scrolly-copy">{scenes.map(scene => <ScrollyScene key={scene.index} scene={scene} progress={scrollYProgress} reduce={reduce} />)}</div>
         <motion.div className="scrolly-stage glass" style={reduce ? undefined : { scale: mockScale, rotate: mockRotate }}>
