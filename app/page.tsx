@@ -100,7 +100,24 @@ function HeroCarousel() {
         <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
         <div className="hero-glass-visual" aria-hidden="true">
           <div className="glass-browser-top"><i /><i /><i /></div>
-          <div className="glass-wave"><i /><i /><i /></div>
+          <svg className="glass-wave" viewBox="0 0 620 510" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="wave-fill" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#8fa7ff" stopOpacity=".2" />
+                <stop offset=".55" stopColor="#4f69c9" stopOpacity=".08" />
+                <stop offset="1" stopColor="#1a2347" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="wave-line" x1="0" y1="0" x2="1" y2=".7">
+                <stop offset="0" stopColor="#dbe3ff" stopOpacity=".9" />
+                <stop offset=".48" stopColor="#8ba4ff" stopOpacity=".95" />
+                <stop offset="1" stopColor="#5267bc" stopOpacity=".25" />
+              </linearGradient>
+              <filter id="wave-glow"><feGaussianBlur stdDeviation="8" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+            </defs>
+            <path className="wave-depth" d="M-25 286 C90 238 180 308 278 383 C378 460 492 472 655 426 L655 550 L-25 550 Z" />
+            <path className="wave-main" d="M-25 286 C90 238 180 308 278 383 C378 460 492 472 655 426" />
+            <path className="wave-echo" d="M-35 306 C88 266 171 329 270 398 C374 470 501 487 660 446" />
+          </svg>
           <span className="glass-shine" />
         </div>
       </div>
