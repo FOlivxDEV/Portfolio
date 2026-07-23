@@ -174,6 +174,23 @@ function CookieCenter() {
   );
 }
 
+function AmbientAtmosphere() {
+  const atmosphere = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let frame = 0;
+    const move = (event: PointerEvent) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        atmosphere.current?.style.setProperty("--pointer-x", `${event.clientX}px`);
+        atmosphere.current?.style.setProperty("--pointer-y", `${event.clientY}px`);
+      });
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("pointermove", move); };
+  }, []);
+  return <div ref={atmosphere} className="cursor-atmosphere" aria-hidden="true"><i /><i /></div>;
+}
+
 export default function Home() {
   const [menu, setMenu] = useState(false);
   const [category, setCategory] = useState("Todos");
@@ -196,6 +213,7 @@ export default function Home() {
 
   return (
     <>
+      <AmbientAtmosphere />
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="nav-wrap">
         <nav className="navbar glass" aria-label="Navegação principal">
@@ -266,7 +284,6 @@ export default function Home() {
         </Section>
 
         <Section id="contato" className="contact-section">
-          <div className="contact-glow" />
           <div className="contact-copy"><span className="kicker">Vamos criar algo memorável</span><h2>Pronto para ter<br />um site assim?</h2><p>Conte um pouco sobre seu momento. Em até um dia útil, você recebe uma resposta direta sobre caminhos, prazo e investimento.</p><div className="availability"><i /> Agenda aberta para novos projetos</div></div>
           <form className="contact-form glass" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="field-row"><label>Nome<input autoComplete="name" {...register("name")} placeholder="Seu nome" />{errors.name && <small>{errors.name.message}</small>}</label><label>E-mail<input autoComplete="email" {...register("email")} placeholder="voce@empresa.com" />{errors.email && <small>{errors.email.message}</small>}</label></div>
