@@ -100,7 +100,7 @@ function HeroCarousel() {
       <div className="scrolly-grid carousel-grid">
         <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
         <div className="hero-device-showcase" aria-hidden="true">
-          <Image src="/hero-device-showcase.png" alt="" width={1792} height={1024} priority sizes="(max-width: 650px) 110vw, 52vw" />
+          <Image src="/hero-device-showcase-transparent.png" alt="" width={1802} height={873} priority sizes="(max-width: 650px) 110vw, 52vw" />
         </div>
       </div>
       <div className="carousel-controls-hero" aria-label="Selecionar mensagem">

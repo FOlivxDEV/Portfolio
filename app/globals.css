@@ -98,7 +98,7 @@ h1 span { background:linear-gradient(120deg,#fff 0%,#a7bbff 65%,#d3dcff 100%); c
 .carousel-grid{grid-template-columns:.92fr 1.08fr;max-width:1700px;gap:clamp(46px,5vw,90px)}
 .carousel-grid .scrolly-copy{width:min(800px,45vw);justify-self:start}
 .hero-device-showcase{width:min(900px,51vw);justify-self:end;transform:translateX(3vw);filter:drop-shadow(0 42px 55px rgba(24,38,92,.3));pointer-events:none;animation:device-float 8s ease-in-out infinite alternate}
-.hero-device-showcase img{display:block;width:100%;height:auto;mix-blend-mode:screen}
+.hero-device-showcase img{display:block;width:100%;height:auto}
 @keyframes device-float{from{transform:translate3d(3vw,4px,0) scale(.99)}to{transform:translate3d(3vw,-8px,0) scale(1.01)}}
 .carousel-controls-hero{position:absolute;z-index:4;left:clamp(45px,6vw,110px);right:clamp(45px,6vw,110px);bottom:34px;display:grid;grid-template-columns:180px auto 1fr;align-items:center;gap:18px;color:#687286;font-size:9px;letter-spacing:.12em}
 .carousel-timer{height:1px;background:rgba(255,255,255,.12);overflow:hidden}.carousel-timer i{display:block;width:100%;height:1px;background:#a7bbff;transform-origin:left;animation:carousel-countdown 13s linear forwards;box-shadow:0 0 9px rgba(167,187,255,.6)}
