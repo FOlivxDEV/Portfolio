@@ -6,7 +6,7 @@ import {
   ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Gauge,
   Layers3, Menu, ShieldCheck, Sparkles, X, Zap,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -175,10 +175,110 @@ function AmbientAtmosphere() {
   return <div ref={atmosphere} className="cursor-atmosphere" aria-hidden="true"><i /><i /></div>;
 }
 
+function PortfolioMarquee({
+  projects,
+  reverse = false,
+  onSelect,
+}: {
+  projects: typeof portfolio;
+  reverse?: boolean;
+  onSelect: (project: (typeof portfolio)[number]) => void;
+}) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef({ active: false, dragged: false, x: 0, scrollLeft: 0 });
+  const resumeAtRef = useRef(0);
+
+  const normalizePosition = useCallback(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const segment = viewport.scrollWidth / 4;
+    if (!segment) return;
+    if (viewport.scrollLeft < segment * .5) viewport.scrollLeft += segment * 2;
+    if (viewport.scrollLeft > segment * 2.5) viewport.scrollLeft -= segment * 2;
+  }, []);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const setInitialPosition = () => {
+      const segment = viewport.scrollWidth / 4;
+      viewport.scrollLeft = reverse ? segment * 2 : segment;
+    };
+    setInitialPosition();
+    window.addEventListener("resize", setInitialPosition);
+    let frame = 0;
+    let previous = performance.now();
+    const animate = (time: number) => {
+      const elapsed = Math.min(time - previous, 32);
+      previous = time;
+      if (!reduceMotion && !pointerRef.current.active && time >= resumeAtRef.current) {
+        viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .025;
+        normalizePosition();
+      }
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", setInitialPosition);
+    };
+  }, [normalizePosition, reverse]);
+
+  const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const viewport = viewportRef.current;
+    pointerRef.current.active = false;
+    resumeAtRef.current = performance.now() + 900;
+    if (viewport?.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+    normalizePosition();
+  };
+
+  return (
+    <div
+      className={`marquee-row ${reverse ? "reverse" : ""}`}
+      ref={viewportRef}
+      onPointerDown={event => {
+        const viewport = viewportRef.current;
+        if (!viewport) return;
+        pointerRef.current = { active: true, dragged: false, x: event.clientX, scrollLeft: viewport.scrollLeft };
+        viewport.setPointerCapture(event.pointerId);
+      }}
+      onPointerMove={event => {
+        const viewport = viewportRef.current;
+        if (!viewport || !pointerRef.current.active) return;
+        const delta = event.clientX - pointerRef.current.x;
+        if (Math.abs(delta) > 5) pointerRef.current.dragged = true;
+        viewport.scrollLeft = pointerRef.current.scrollLeft - delta;
+        normalizePosition();
+      }}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      onClickCapture={event => {
+        if (pointerRef.current.dragged) {
+          event.preventDefault();
+          event.stopPropagation();
+          pointerRef.current.dragged = false;
+        }
+      }}
+    >
+      <div className="marquee-track">
+        {Array.from({ length: 4 }, (_, copy) =>
+          projects.map(project => (
+            <button className="marquee-project" onClick={() => onSelect(project)} key={`${project.slug}-${copy}`} aria-label={`Abrir projeto ${project.name}`}>
+              <ProjectVisual project={project} />
+              <span><small>{project.category}</small><b>{project.name}</b></span>
+            </button>
+          )),
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [menu, setMenu] = useState(false);
   const [selected, setSelected] = useState<(typeof portfolio)[number] | null>(null);
-  const [emblaRef, embla] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps" });
+  const [emblaRef, embla] = useEmblaCarousel({ align: "start", loop: true });
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ContactData>({
     resolver: zodResolver(contactSchema), defaultValues: { website: "", consent: false },
   });
@@ -215,18 +315,8 @@ export default function Home() {
             <p>Projetos digitais pensados para transformar percepção em valor e visitantes em clientes.</p>
           </div>
           <div className="portfolio-marquee" aria-label="Projetos em destaque">
-            {[portfolio.slice(0, 3), portfolio.slice(3, 6)].map((row, rowIndex) => (
-              <div className={`marquee-row ${rowIndex === 1 ? "reverse" : ""}`} key={rowIndex}>
-                <div className="marquee-track">
-                  {[...row, ...row].map((project, index) => (
-                    <button className="marquee-project" onClick={() => setSelected(project)} key={`${project.slug}-${index}`} aria-label={`Abrir projeto ${project.name}`}>
-                      <ProjectVisual project={project} />
-                      <span><small>{project.category}</small><b>{project.name}</b></span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
+            <PortfolioMarquee projects={portfolio.slice(0, 3)} onSelect={setSelected} />
+            <PortfolioMarquee projects={portfolio.slice(3, 6)} reverse onSelect={setSelected} />
           </div>
           <div className="portfolio-all"><Link className="secondary-button" href="/portfolio">Ver todos <ArrowRight size={17} /></Link></div>
         </Section>
