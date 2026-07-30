@@ -186,7 +186,6 @@ function PortfolioMarquee({
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ active: false, dragged: false, x: 0, scrollLeft: 0 });
-  const hoverRef = useRef(false);
 
   const normalizePosition = useCallback(() => {
     const viewport = viewportRef.current;
@@ -211,7 +210,8 @@ function PortfolioMarquee({
     const animate = (time: number) => {
       const elapsed = Math.min(time - previous, 32);
       previous = time;
-      if (!pointerRef.current.active && !hoverRef.current) {
+      const pausedByHover = window.matchMedia("(hover: hover)").matches && viewport.matches(":hover");
+      if (!pointerRef.current.active && !pausedByHover) {
         viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .045;
         normalizePosition();
       }
@@ -239,23 +239,21 @@ function PortfolioMarquee({
         const viewport = viewportRef.current;
         if (!viewport) return;
         pointerRef.current = { active: true, dragged: false, x: event.clientX, scrollLeft: viewport.scrollLeft };
-        viewport.setPointerCapture(event.pointerId);
       }}
       onPointerMove={event => {
         const viewport = viewportRef.current;
         if (!viewport || !pointerRef.current.active) return;
         const delta = event.clientX - pointerRef.current.x;
-        if (Math.abs(delta) > 5) pointerRef.current.dragged = true;
+        if (Math.abs(delta) > 5 && !pointerRef.current.dragged) {
+          pointerRef.current.dragged = true;
+          viewport.setPointerCapture(event.pointerId);
+        }
         viewport.scrollLeft = pointerRef.current.scrollLeft - delta;
         normalizePosition();
       }}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
-      onPointerEnter={event => {
-        if (event.pointerType === "mouse") hoverRef.current = true;
-      }}
       onPointerLeave={event => {
-        if (event.pointerType === "mouse") hoverRef.current = false;
         if (pointerRef.current.active) endDrag(event);
       }}
       onClickCapture={event => {
