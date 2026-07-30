@@ -287,7 +287,7 @@ export default function Home() {
           rel="noopener noreferrer"
           aria-label="Conversar pelo WhatsApp"
         >
-          <img src="/whatsapp-3d.png" alt="" width="421" height="482" />
+          <img src="/whatsapp-3d.png" alt="" width="421" height="421" />
         </a>
 
         <Section id="contato" className="contact-section">
