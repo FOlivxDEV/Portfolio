@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import {
   ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Gauge,
-  Layers3, Menu, Phone, ShieldCheck, Sparkles, X, Zap,
+  Layers3, Menu, ShieldCheck, Sparkles, X, Zap,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -287,7 +287,7 @@ export default function Home() {
           rel="noopener noreferrer"
           aria-label="Conversar pelo WhatsApp"
         >
-          <span><Phone aria-hidden="true" /></span>
+          <img src="/whatsapp-3d.png" alt="" width="421" height="482" />
         </a>
 
         <Section id="contato" className="contact-section">
