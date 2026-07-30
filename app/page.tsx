@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import { siteConfig, portfolio, plans, timeline, stats } from "./site-data";
+import { siteConfig, portfolio, plans, stats } from "./site-data";
 import { ProjectVisual } from "./components/project-visual";
 
 const contactSchema = z.object({
@@ -261,7 +261,6 @@ export default function Home() {
           <div className="about-copy"><span className="kicker">Quem está por trás</span><h2>Design com intenção.<br />Código com precisão.</h2><p>{siteConfig.about}</p>
             <div className="stats">{stats.map(item => <div key={item.label}><b>{item.value}</b><span>{item.label}</span></div>)}</div>
           </div>
-          <div className="timeline">{timeline.map((item, i) => <div key={item.year}><span>{item.year}</span><i /><p><b>{item.title}</b>{item.text}</p>{i < timeline.length - 1 && <em />}</div>)}</div>
         </Section>
 
         <Section id="planos">

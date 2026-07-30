@@ -27,11 +27,6 @@ export const benefits = [
   { title: "Escalabilidade", description: "Tecnologia preparada para crescer junto com o negócio." },
 ];
 export const stats = [{ value: "+100", label: "projetos" }, { value: "5 anos", label: "de experiência" }, { value: "Next.js", label: "especialidade" }, { value: "UI", label: "premium" }];
-export const timeline = [
-  { year: "2020", title: "Primeiros produtos", text: "Sites com foco em clareza e conversão." },
-  { year: "2023", title: "Studio independente", text: "Processo autoral para marcas ambiciosas." },
-  { year: "Hoje", title: "Experiências completas", text: "Design, código e automações no mesmo lugar." },
-];
 export const plans = [
   { name: "Landing Page", description: "Uma página focada em campanhas, lançamentos e conversão.", prefix: "a partir de", price: "R$ 3.900", suffix: "", features: ["Direção visual exclusiva", "Copy estrutural", "SEO técnico", "Integrações essenciais", "Entrega otimizada"], cta: "Quero este plano" },
   { name: "Site Institucional", description: "Presença completa para consolidar autoridade e confiança.", prefix: "a partir de", price: "R$ 7.900", suffix: "", features: ["Até 6 páginas", "CMS ou conteúdo editável", "SEO avançado", "Analytics consentido", "Suporte pós-lançamento"], cta: "Escolher institucional", featured: true },
