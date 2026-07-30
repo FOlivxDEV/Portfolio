@@ -28,7 +28,7 @@ export const benefits = [
 ];
 export const stats = [{ value: "+100", label: "projetos" }, { value: "5 anos", label: "de experiência" }, { value: "Next.js", label: "especialidade" }, { value: "UI", label: "premium" }];
 export const plans = [
-  { name: "Landing Page", description: "Uma página focada em campanhas, lançamentos e conversão.", prefix: "a partir de", price: "R$ 3.900", suffix: "", features: ["Direção visual exclusiva", "Copy estrutural", "SEO técnico", "Integrações essenciais", "Entrega otimizada"], cta: "Quero este plano" },
-  { name: "Site Institucional", description: "Presença completa para consolidar autoridade e confiança.", prefix: "a partir de", price: "R$ 7.900", suffix: "", features: ["Até 6 páginas", "CMS ou conteúdo editável", "SEO avançado", "Analytics consentido", "Suporte pós-lançamento"], cta: "Escolher institucional", featured: true },
+  { name: "Landing Page", description: "Uma única página com tudo que você precisa. Ideal para todos os tipos de negócio.", prefix: "a partir de", price: "R$ 297", suffix: "", features: ["Ideal para vender um único serviço", "Feita para gerar mais contatos", "Carregamento rápido", "Funciona em celular e computador", "Aumenta sua conversão em +60%"], cta: "Quero este plano", featured: true },
+  { name: "Site Institucional", description: "Presença completa para consolidar autoridade e confiança.", prefix: "a partir de", price: "R$ 497", suffix: "", features: ["Até 6 páginas", "Apresente sua empresa com profissionalismo", "Fácil de atualizar quando precisar", "Aparece melhor no Google", "Funciona em qualquer dispositivo"], cta: "Escolher institucional" },
   { name: "Projeto Personalizado", description: "Para plataformas, e-commerces e desafios fora do padrão.", prefix: "", price: "Sob consulta", suffix: "", features: ["Escopo sob medida", "Arquitetura dedicada", "Integrações e automações", "Design system", "Evolução contínua"], cta: "Falar com especialista" },
 ];

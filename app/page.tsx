@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import {
   ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Gauge,
-  Layers3, Menu, ShieldCheck, Sparkles, X, Zap,
+  Layers3, Menu, Phone, ShieldCheck, Sparkles, X, Zap,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -267,7 +267,7 @@ export default function Home() {
           <div className="section-heading centered"><span className="kicker">Investimento transparente</span><h2>Planos para cada ambição</h2><p>Escolha um ponto de partida. Cada projeto é refinado para a realidade da sua marca.</p></div>
           <div className="plan-viewport" ref={emblaRef}><div className="plan-grid">
             {plans.map((plan, index) => <article className={`plan-card glass ${plan.featured ? "featured" : ""}`} key={plan.name}>
-              {plan.featured && <span className="best">Melhor escolha</span>}
+              {plan.featured && <span className="best">Recomendado</span>}
               <span className="plan-icon">{index === 0 ? <Zap /> : index === 1 ? <Layers3 /> : <Sparkles />}</span>
               <h3>{plan.name}</h3><p>{plan.description}</p>
               <div className="price"><small>{plan.prefix}</small><b>{plan.price}</b><span>{plan.suffix}</span></div>
@@ -279,6 +279,16 @@ export default function Home() {
           </div></div>
           <div className="carousel-controls"><button aria-label="Plano anterior" onClick={() => embla?.scrollPrev()}><ChevronLeft /></button><button aria-label="Próximo plano" onClick={() => embla?.scrollNext()}><ChevronRight /></button></div>
         </Section>
+
+        <a
+          className="whatsapp-float"
+          href={`https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent("Olá! Gostaria de conversar sobre a criação do meu site.")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Conversar pelo WhatsApp"
+        >
+          <span><Phone aria-hidden="true" /></span>
+        </a>
 
         <Section id="contato" className="contact-section">
           <div className="contact-copy"><span className="kicker">Vamos criar algo memorável</span><h2>Pronto para ter<br />um site assim?</h2><p>Conte um pouco sobre seu momento. Em até um dia útil, você recebe uma resposta direta sobre caminhos, prazo e investimento.</p><div className="availability"><i /> Agenda aberta para novos projetos</div></div>
