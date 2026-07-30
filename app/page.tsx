@@ -90,16 +90,16 @@ function HeroCarousel() {
           <div className="hero-actions"><a className="primary-button" href="#planos">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>
         </div>
       </div>
-      <div className="hero-proof-strip" aria-label="Resultados do Studio X">
-        <div><b>+200</b><span>pedidos entregues</span></div>
-        <div><b>+2</b><span>anos de mercado</span></div>
-        <div><b>98%</b><span>de aprovação</span></div>
-      </div>
       <div className="carousel-controls-hero" aria-label="Selecionar mensagem">
         <div className="carousel-timer" key={activeScene}><i style={{ animationDuration: `${duration}ms` }} /></div>
         <span>{String(activeScene + 1).padStart(2, "0")} / 04</span>
         <div>{scenes.map((scene, index) => <button key={scene.index} className={activeScene === index ? "active" : ""} onClick={() => select(index)} aria-label={`Ver mensagem ${index + 1}`} />)}</div>
       </div>
+    </div>
+    <div className="hero-proof-strip" aria-label="Resultados do Studio X">
+      <div><b>+200</b><span>pedidos entregues</span></div>
+      <div><b>+2</b><span>anos de mercado</span></div>
+      <div><b>98%</b><span>de aprovação</span></div>
     </div>
   </section>;
 }
