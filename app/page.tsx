@@ -210,9 +210,8 @@ function PortfolioMarquee({
     const animate = (time: number) => {
       const elapsed = Math.min(time - previous, 32);
       previous = time;
-      const pausedByHover = window.matchMedia("(hover: hover)").matches && viewport.matches(":hover");
-      if (!pointerRef.current.active && !pausedByHover) {
-        viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .045;
+      if (!pointerRef.current.active) {
+        viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .065;
         normalizePosition();
       }
       frame = requestAnimationFrame(animate);
