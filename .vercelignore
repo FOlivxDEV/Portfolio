@@ -1,0 +1,6 @@
+.openai/package-stage*/
+.openai/site-package*.tgz
+tmp/
+dist/
+.next/
+tsconfig.tsbuildinfo
