@@ -11,8 +11,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import Image from "next/image";
 import { siteConfig, portfolio, plans, timeline, stats } from "./site-data";
+import { ProjectVisual } from "./components/project-visual";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Informe seu nome."),
@@ -41,18 +41,6 @@ function Section({ id, children, className = "" }: { id: string; children: React
   );
 }
 
-function ProjectVisual({ project, large = false }: { project: (typeof portfolio)[number]; large?: boolean }) {
-  return (
-    <div className={`project-visual ${large ? "large" : ""}`} style={{ "--accent": project.accent } as React.CSSProperties}>
-      <div className="mock-nav"><span /><span /><span /><i /></div>
-      <div className="mock-body">
-        <div className="mock-copy"><small>{project.eyebrow}</small><b>{project.mockTitle}</b><span /><span /><button>Explorar</button></div>
-        <div className="mock-art"><i /><i /><i /></div>
-      </div>
-    </div>
-  );
-}
-
 type Scene = { index: string; kicker: string; title: React.ReactNode; text: string };
 function ScrollyScene({ scene, reduce }: { scene: Scene; reduce: boolean | null }) {
   const parent = {
@@ -71,7 +59,6 @@ function ScrollyScene({ scene, reduce }: { scene: Scene; reduce: boolean | null 
     <motion.span variants={child} className="kicker">{scene.kicker}</motion.span>
     <motion.h1 variants={child}>{scene.title}</motion.h1>
     <motion.p variants={child}>{scene.text}</motion.p>
-    {scene.index === "04" && <motion.div variants={child} className="hero-actions"><a className="primary-button" href="#planos">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></motion.div>}
   </motion.div>;
 }
 
@@ -99,8 +86,13 @@ function HeroCarousel() {
       <div className="hero-aurora" aria-hidden="true"><span /></div>
       <div className="scrolly-grid carousel-grid">
         <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
-        <div className="hero-device-showcase" aria-hidden="true">
-          <Image src="/hero-device-showcase-transparent.png" alt="" width={1802} height={873} priority sizes="(max-width: 650px) 110vw, 52vw" />
+        <div className="hero-static-content">
+          <div className="hero-actions"><a className="primary-button" href="#planos">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>
+          <div className="hero-proof-strip" aria-label="Resultados do Studio X">
+            <div><b>+200</b><span>pedidos entregues</span></div>
+            <div><b>+2 anos</b><span>de mercado</span></div>
+            <div><b>98%</b><span>de aprovação</span></div>
+          </div>
         </div>
       </div>
       <div className="carousel-controls-hero" aria-label="Selecionar mensagem">
@@ -185,16 +177,12 @@ function AmbientAtmosphere() {
 
 export default function Home() {
   const [menu, setMenu] = useState(false);
-  const [category, setCategory] = useState("Todos");
   const [selected, setSelected] = useState<(typeof portfolio)[number] | null>(null);
   const [emblaRef, embla] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps" });
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ContactData>({
     resolver: zodResolver(contactSchema), defaultValues: { website: "", consent: false },
   });
   const [formState, setFormState] = useState("");
-  const categories = ["Todos", ...Array.from(new Set(portfolio.map(p => p.category)))];
-  const filtered = category === "Todos" ? portfolio : portfolio.filter(p => p.category === category);
-
   const onSubmit = async (data: ContactData) => {
     setFormState("");
     const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
@@ -222,24 +210,25 @@ export default function Home() {
         <HeroCarousel />
 
         <Section id="portfolio">
-          <div className="section-heading split">
-            <div><span className="kicker">Trabalhos selecionados</span><h2>Nosso Portfólio</h2></div>
+          <div className="section-heading centered">
+            <span className="kicker">Trabalhos selecionados</span><h2>Nosso Portfólio</h2>
             <p>Projetos digitais pensados para transformar percepção em valor e visitantes em clientes.</p>
           </div>
-          <div className="category-list" role="tablist" aria-label="Categorias do portfólio">
-            {categories.map(cat => <button role="tab" aria-selected={category === cat} className={category === cat ? "active" : ""} onClick={() => setCategory(cat)} key={cat}>{cat}</button>)}
+          <div className="portfolio-marquee" aria-label="Projetos em destaque">
+            {[portfolio.slice(0, 3), portfolio.slice(3, 6)].map((row, rowIndex) => (
+              <div className={`marquee-row ${rowIndex === 1 ? "reverse" : ""}`} key={rowIndex}>
+                <div className="marquee-track">
+                  {[...row, ...row].map((project, index) => (
+                    <button className="marquee-project" onClick={() => setSelected(project)} key={`${project.slug}-${index}`} aria-label={`Abrir projeto ${project.name}`}>
+                      <ProjectVisual project={project} />
+                      <span><small>{project.category}</small><b>{project.name}</b></span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
-          <motion.div layout className="portfolio-grid">
-            <AnimatePresence mode="popLayout">
-              {filtered.map(project => (
-                <motion.button layout key={project.name} className="project-card glass" onClick={() => setSelected(project)}
-                  initial={{ opacity: 0, scale: .95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: .95 }}>
-                  <ProjectVisual project={project} />
-                  <div className="project-meta"><span><small>{project.category}</small><b>{project.name}</b><p>{project.description}</p></span><i><ArrowRight size={18} /></i></div>
-                </motion.button>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <div className="portfolio-all"><Link className="secondary-button" href="/portfolio">Ver todos <ArrowRight size={17} /></Link></div>
         </Section>
 
         <Section id="sobre">
