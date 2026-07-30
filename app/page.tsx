@@ -6,7 +6,7 @@ import {
   ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Gauge,
   Layers3, Menu, ShieldCheck, Sparkles, X, Zap,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -185,49 +185,39 @@ function PortfolioMarquee({
   onSelect: (project: (typeof portfolio)[number]) => void;
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
-  const pointerRef = useRef({ active: false, dragged: false, x: 0, scrollLeft: 0 });
-
-  const normalizePosition = useCallback(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return;
-    const segment = viewport.scrollWidth / 4;
-    if (!segment) return;
-    if (viewport.scrollLeft < segment * .5) viewport.scrollLeft += segment * 2;
-    if (viewport.scrollLeft > segment * 2.5) viewport.scrollLeft -= segment * 2;
-  }, []);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<Animation | null>(null);
+  const durationRef = useRef(30_000);
+  const pointerRef = useRef({ active: false, dragged: false, x: 0, animationTime: 0 });
 
   useEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return;
-    const setInitialPosition = () => {
-      const segment = viewport.scrollWidth / 4;
-      viewport.scrollLeft = reverse ? segment * 2 : segment;
+    const track = trackRef.current;
+    if (!track) return;
+    const startAnimation = () => {
+      animationRef.current?.cancel();
+      const segment = track.scrollWidth / 4;
+      const duration = Math.max(24_000, (segment / 65) * 1000);
+      durationRef.current = duration;
+      animationRef.current = track.animate(
+        reverse
+          ? [{ transform: `translate3d(${-segment}px,0,0)` }, { transform: "translate3d(0,0,0)" }]
+          : [{ transform: "translate3d(0,0,0)" }, { transform: `translate3d(${-segment}px,0,0)` }],
+        { duration, iterations: Infinity, easing: "linear" },
+      );
     };
-    setInitialPosition();
-    window.addEventListener("resize", setInitialPosition);
-    let frame = 0;
-    let previous = performance.now();
-    const animate = (time: number) => {
-      const elapsed = Math.min(time - previous, 32);
-      previous = time;
-      if (!pointerRef.current.active) {
-        viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .065;
-        normalizePosition();
-      }
-      frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
+    startAnimation();
+    window.addEventListener("resize", startAnimation);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", setInitialPosition);
+      animationRef.current?.cancel();
+      window.removeEventListener("resize", startAnimation);
     };
-  }, [normalizePosition, reverse]);
+  }, [reverse]);
 
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     const viewport = viewportRef.current;
     pointerRef.current.active = false;
+    animationRef.current?.play();
     if (viewport?.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
-    normalizePosition();
   };
 
   return (
@@ -237,7 +227,8 @@ function PortfolioMarquee({
       onPointerDown={event => {
         const viewport = viewportRef.current;
         if (!viewport) return;
-        pointerRef.current = { active: true, dragged: false, x: event.clientX, scrollLeft: viewport.scrollLeft };
+        const currentTime = Number(animationRef.current?.currentTime ?? 0);
+        pointerRef.current = { active: true, dragged: false, x: event.clientX, animationTime: currentTime };
       }}
       onPointerMove={event => {
         const viewport = viewportRef.current;
@@ -245,10 +236,15 @@ function PortfolioMarquee({
         const delta = event.clientX - pointerRef.current.x;
         if (Math.abs(delta) > 5 && !pointerRef.current.dragged) {
           pointerRef.current.dragged = true;
+          animationRef.current?.pause();
           viewport.setPointerCapture(event.pointerId);
         }
-        viewport.scrollLeft = pointerRef.current.scrollLeft - delta;
-        normalizePosition();
+        if (pointerRef.current.dragged && animationRef.current) {
+          const segment = trackRef.current ? trackRef.current.scrollWidth / 4 : 1;
+          const millisecondsPerPixel = durationRef.current / segment;
+          const timeShift = (reverse ? delta : -delta) * millisecondsPerPixel;
+          animationRef.current.currentTime = pointerRef.current.animationTime + timeShift;
+        }
       }}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
@@ -263,15 +259,17 @@ function PortfolioMarquee({
         }
       }}
     >
-      <div className="marquee-track">
-        {Array.from({ length: 4 }, (_, copy) =>
-          projects.map(project => (
-            <button className="marquee-project" onClick={() => onSelect(project)} key={`${project.slug}-${copy}`} aria-label={`Abrir projeto ${project.name}`}>
-              <ProjectVisual project={project} />
-              <span><small>{project.category}</small><b>{project.name}</b></span>
-            </button>
-          )),
-        )}
+      <div className="marquee-track" ref={trackRef}>
+        {Array.from({ length: 4 }, (_, copy) => (
+          <div className="marquee-segment" key={copy} aria-hidden={copy > 0}>
+            {projects.map(project => (
+              <button className="marquee-project" onClick={() => onSelect(project)} key={`${project.slug}-${copy}`} aria-label={`Abrir projeto ${project.name}`} tabIndex={copy > 0 ? -1 : undefined}>
+                <ProjectVisual project={project} />
+                <span><small>{project.category}</small><b>{project.name}</b></span>
+              </button>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
