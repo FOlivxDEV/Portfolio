@@ -88,12 +88,12 @@ function HeroCarousel() {
         <div className="scrolly-copy"><AnimatePresence mode="wait" initial={false}><ScrollyScene key={scenes[activeScene].index} scene={scenes[activeScene]} reduce={reduce} /></AnimatePresence></div>
         <div className="hero-static-content">
           <div className="hero-actions"><a className="primary-button" href="#planos">Iniciar meu projeto <ArrowRight size={17} /></a><a className="secondary-button" href="#portfolio">Ver portfólio <Layers3 size={17} /></a></div>
-          <div className="hero-proof-strip" aria-label="Resultados do Studio X">
-            <div><b>+200</b><span>pedidos entregues</span></div>
-            <div><b>+2 anos</b><span>de mercado</span></div>
-            <div><b>98%</b><span>de aprovação</span></div>
-          </div>
         </div>
+      </div>
+      <div className="hero-proof-strip" aria-label="Resultados do Studio X">
+        <div><b>+200</b><span>pedidos entregues</span></div>
+        <div><b>+2 anos</b><span>de mercado</span></div>
+        <div><b>98%</b><span>de aprovação</span></div>
       </div>
       <div className="carousel-controls-hero" aria-label="Selecionar mensagem">
         <div className="carousel-timer" key={activeScene}><i style={{ animationDuration: `${duration}ms` }} /></div>
