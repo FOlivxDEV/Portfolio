@@ -186,7 +186,6 @@ function PortfolioMarquee({
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ active: false, dragged: false, x: 0, scrollLeft: 0 });
-  const resumeAtRef = useRef(0);
 
   const normalizePosition = useCallback(() => {
     const viewport = viewportRef.current;
@@ -200,7 +199,6 @@ function PortfolioMarquee({
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const setInitialPosition = () => {
       const segment = viewport.scrollWidth / 4;
       viewport.scrollLeft = reverse ? segment * 2 : segment;
@@ -212,8 +210,8 @@ function PortfolioMarquee({
     const animate = (time: number) => {
       const elapsed = Math.min(time - previous, 32);
       previous = time;
-      if (!reduceMotion && !pointerRef.current.active && time >= resumeAtRef.current) {
-        viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .025;
+      if (!pointerRef.current.active) {
+        viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .045;
         normalizePosition();
       }
       frame = requestAnimationFrame(animate);
@@ -228,7 +226,6 @@ function PortfolioMarquee({
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     const viewport = viewportRef.current;
     pointerRef.current.active = false;
-    resumeAtRef.current = performance.now() + 900;
     if (viewport?.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
     normalizePosition();
   };
