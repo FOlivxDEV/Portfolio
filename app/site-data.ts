@@ -26,7 +26,7 @@ export const benefits = [
   { title: "Suporte", description: "Acompanhamento próximo antes e depois do lançamento." },
   { title: "Escalabilidade", description: "Tecnologia preparada para crescer junto com o negócio." },
 ];
-export const stats = [{ value: "+100", label: "projetos" }, { value: "5 anos", label: "de experiência" }, { value: "Next.js", label: "especialidade" }, { value: "UI", label: "premium" }];
+export const stats = [{ value: "+200", label: "projetos" }, { value: "2 anos", label: "de experiência" }, { value: "Landing Page", label: "especialidade" }, { value: "UI", label: "premium" }];
 export const plans = [
   { name: "Landing Page", description: "Uma única página com tudo que você precisa. Ideal para todos os tipos de negócio.", prefix: "a partir de", price: "R$ 297", suffix: "", features: ["Ideal para vender um único serviço", "Feita para gerar mais contatos", "Carregamento rápido", "Funciona em celular e computador", "Aumenta sua conversão em +60%"], cta: "Quero este plano", featured: true },
   { name: "Site Institucional", description: "Presença completa para consolidar autoridade e confiança.", prefix: "a partir de", price: "R$ 497", suffix: "", features: ["Até 6 páginas", "Apresente sua empresa com profissionalismo", "Fácil de atualizar quando precisar", "Aparece melhor no Google", "Funciona em qualquer dispositivo"], cta: "Escolher institucional" },
