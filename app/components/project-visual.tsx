@@ -2,6 +2,13 @@ import type { CSSProperties } from "react";
 import { portfolio } from "../site-data";
 
 export function ProjectVisual({ project, large = false }: { project: (typeof portfolio)[number]; large?: boolean }) {
+  if ("previewImage" in project && project.previewImage) {
+    return (
+      <div className={`project-visual captured-site ${large ? "large" : ""}`} style={{ "--accent": project.accent } as CSSProperties}>
+        <img src={project.previewImage} alt={`Captura completa do site ${project.name}`} draggable={false} />
+      </div>
+    );
+  }
   return (
     <div className={`project-visual ${large ? "large" : ""}`} style={{ "--accent": project.accent } as CSSProperties}>
       <div className="mock-nav"><span /><span /><span /><i /></div>

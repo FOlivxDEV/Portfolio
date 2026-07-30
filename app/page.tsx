@@ -186,6 +186,7 @@ function PortfolioMarquee({
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ active: false, dragged: false, x: 0, scrollLeft: 0 });
+  const hoverRef = useRef(false);
 
   const normalizePosition = useCallback(() => {
     const viewport = viewportRef.current;
@@ -210,7 +211,7 @@ function PortfolioMarquee({
     const animate = (time: number) => {
       const elapsed = Math.min(time - previous, 32);
       previous = time;
-      if (!pointerRef.current.active) {
+      if (!pointerRef.current.active && !hoverRef.current) {
         viewport.scrollLeft += (reverse ? -1 : 1) * elapsed * .045;
         normalizePosition();
       }
@@ -250,6 +251,13 @@ function PortfolioMarquee({
       }}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
+      onPointerEnter={event => {
+        if (event.pointerType === "mouse") hoverRef.current = true;
+      }}
+      onPointerLeave={event => {
+        if (event.pointerType === "mouse") hoverRef.current = false;
+        if (pointerRef.current.active) endDrag(event);
+      }}
       onClickCapture={event => {
         if (pointerRef.current.dragged) {
           event.preventDefault();

@@ -10,10 +10,10 @@ export const siteConfig = {
 };
 
 export const portfolio = [
-  { name: "Atria Odontologia", slug: "atria", category: "Odontologia", description: "Presença digital sofisticada para uma clínica de alta performance.", accent: "#a7bbff", eyebrow: "ODONTOLOGIA DE PRECISÃO", mockTitle: "O seu sorriso, elevado." },
-  { name: "Valentim Legal", slug: "valentim", category: "Advocacia", description: "Autoridade e clareza para um escritório jurídico contemporâneo.", accent: "#d1b999", eyebrow: "ESTRATÉGIA JURÍDICA", mockTitle: "Clareza para decisões complexas." },
-  { name: "Nexo Engenharia", slug: "nexo", category: "Engenharia", description: "Performance e escala para uma engenharia sem fronteiras.", accent: "#9bd6c4", eyebrow: "ENGENHARIA INTEGRADA", mockTitle: "Construímos o que vem depois." },
-  { name: "Alba Clínica", slug: "alba", category: "Clínicas", description: "Cuidado, ciência e uma experiência digital acolhedora.", accent: "#d5a7ff", eyebrow: "SAÚDE PERSONALIZADA", mockTitle: "Cuidado em cada detalhe." },
+  { name: "Jr Odontologia", slug: "clinica-odonto-02", category: "Odontologia", description: "Presença digital acolhedora para uma clínica odontológica.", accent: "#a7bbff", eyebrow: "ODONTOLOGIA", mockTitle: "Sorrisos com confiança.", previewImage: "/projects/clinica-odonto-02.webp", sourceUrl: "https://clinicaodonto02.vercel.app/" },
+  { name: "Jr Odontologia Premium", slug: "clinica-odonto-03", category: "Odontologia", description: "Experiência premium focada em cuidado, tecnologia e conversão.", accent: "#9bd6c4", eyebrow: "ODONTOLOGIA PREMIUM", mockTitle: "Cuidado em cada detalhe.", previewImage: "/projects/clinica-odonto-03.webp", sourceUrl: "https://clinicaodonto03.vercel.app/" },
+  { name: "Ferraz, Oliveira & Martins", slug: "escritorio-adv-01", category: "Advocacia", description: "Autoridade e clareza para um escritório jurídico contemporâneo.", accent: "#d1b999", eyebrow: "ESTRATÉGIA JURÍDICA", mockTitle: "Experiência que protege.", previewImage: "/projects/escritorio-adv-01.webp", sourceUrl: "https://escritorioadv01.vercel.app/" },
+  { name: "Ferraz Advocacia", slug: "escritorio-adv-02", category: "Advocacia", description: "Posicionamento jurídico sofisticado, direto e confiável.", accent: "#d5a7ff", eyebrow: "ADVOCACIA ESTRATÉGICA", mockTitle: "Clareza para decisões complexas.", previewImage: "/projects/escritorio-adv-02.webp", sourceUrl: "https://escritorioadv02.vercel.app/" },
   { name: "Haus Imóveis", slug: "haus", category: "Imobiliária", description: "Imóveis extraordinários apresentados com a atenção que merecem.", accent: "#b6d8ff", eyebrow: "CURADORIA IMOBILIÁRIA", mockTitle: "Endereços que contam histórias." },
   { name: "Auré E-commerce", slug: "aure", category: "E-commerce", description: "Uma experiência de compra tátil, editorial e memorável.", accent: "#f0c49c", eyebrow: "OBJETOS ESSENCIAIS", mockTitle: "Menos coisas. Melhores escolhas." },
 ];
