@@ -92,7 +92,7 @@ function HeroCarousel() {
       </div>
       <div className="hero-proof-strip" aria-label="Resultados do Studio X">
         <div><b>+200</b><span>pedidos entregues</span></div>
-        <div><b>+2 anos</b><span>de mercado</span></div>
+        <div><b>+2</b><span>anos de mercado</span></div>
         <div><b>98%</b><span>de aprovação</span></div>
       </div>
       <div className="carousel-controls-hero" aria-label="Selecionar mensagem">
