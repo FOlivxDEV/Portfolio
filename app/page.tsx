@@ -289,8 +289,8 @@ export default function Home() {
             <p>Projetos digitais pensados para transformar percepção em valor e visitantes em clientes.</p>
           </div>
           <div className="portfolio-marquee" aria-label="Projetos em destaque">
-            <PortfolioMarquee projects={portfolio.slice(0, 3)} onSelect={setSelected} />
-            <PortfolioMarquee projects={portfolio.slice(3, 6)} reverse onSelect={setSelected} />
+            <PortfolioMarquee projects={portfolio.filter((_, index) => index % 2 === 0)} onSelect={setSelected} />
+            <PortfolioMarquee projects={portfolio.filter((_, index) => index % 2 === 1)} reverse onSelect={setSelected} />
           </div>
           <div className="portfolio-all"><Link className="secondary-button" href="/portfolio">Ver todos <ArrowRight size={17} /></Link></div>
         </Section>
