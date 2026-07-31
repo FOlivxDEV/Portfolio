@@ -1,14 +1,17 @@
 "use client";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { ProjectModal } from "../components/project-modal";
 import { ProjectVisual } from "../components/project-visual";
 import { portfolio, siteConfig } from "../site-data";
 
 export default function PortfolioPage() {
   const categories = ["Todos", ...Array.from(new Set(portfolio.map(project => project.category)))];
   const [category, setCategory] = useState("Todos");
+  const [selected, setSelected] = useState<(typeof portfolio)[number] | null>(null);
   const projects = useMemo(() => category === "Todos" ? portfolio : portfolio.filter(project => project.category === category), [category]);
 
   return (
@@ -27,12 +30,13 @@ export default function PortfolioPage() {
       </nav>
       <section className="portfolio-page-grid" aria-live="polite">
         {projects.map(project => (
-          <article className="portfolio-page-card glass" key={project.slug}>
+          <button type="button" className="portfolio-page-card glass" key={project.slug} onClick={() => setSelected(project)} aria-label={`Abrir projeto ${project.name}`}>
             <ProjectVisual project={project} />
             <div><span><small>{project.category}</small><b>{project.name}</b><p>{project.description}</p></span><i><ArrowRight size={18} /></i></div>
-          </article>
+          </button>
         ))}
       </section>
+      <AnimatePresence>{selected && <ProjectModal project={selected} close={() => setSelected(null)} />}</AnimatePresence>
     </main>
   );
 }

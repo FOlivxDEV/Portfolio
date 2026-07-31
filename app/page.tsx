@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import {
   ArrowRight, BarChart3, Check, ChevronLeft, ChevronRight, Gauge,
-  Layers3, Menu, ShieldCheck, Sparkles, X, Zap,
+  Layers3, Menu, ShieldCheck, Sparkles, Zap,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ import { z } from "zod";
 import Link from "next/link";
 import { siteConfig, portfolio, plans, stats } from "./site-data";
 import { ProjectVisual } from "./components/project-visual";
+import { ProjectModal } from "./components/project-modal";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Informe seu nome."),
@@ -102,33 +103,6 @@ function HeroCarousel() {
       <div><b>98%</b><span>de aprovação</span></div>
     </div>
   </section>;
-}
-
-function ProjectModal({ project, close }: { project: (typeof portfolio)[number]; close: () => void }) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    closeRef.current?.focus();
-    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
-  }, [close]);
-  return (
-    <motion.div className="modal-backdrop" onMouseDown={close} role="presentation"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <motion.div className="browser-modal" role="dialog" aria-modal="true" aria-label={`Prévia de ${project.name}`}
-        onMouseDown={e => e.stopPropagation()} initial={{ opacity: 0, y: 30, scale: .96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: .97 }}
-        transition={{ type: "spring", stiffness: 280, damping: 28 }}>
-        <div className="browser-bar">
-          <div className="traffic"><i /><i /><i /></div>
-          <div className="address"><ShieldCheck size={13} /> studiox.design/{project.slug}</div>
-          <button ref={closeRef} onClick={close} aria-label="Fechar prévia"><X size={18} /></button>
-        </div>
-        <div className="browser-scroll"><ProjectVisual project={project} large /></div>
-      </motion.div>
-    </motion.div>
-  );
 }
 
 function CookieCenter() {
